@@ -1,5 +1,35 @@
-function hello() {
-  console.log("Hello Node.Js! Trying it for the first time");
-}
+const http = require("http");
+const fs = require("fs");
+const readline = require("readline");
 
-hello();
+const lineDetail = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const server = (registerationPath) =>
+  http
+    .createServer(function (request, response) {
+      let url = request.url;
+      response.writeHeader(200, { "Content-Type": "text/html" });
+      switch (url) {
+        case "/project":
+          stream = fs.createReadStream("project.html");
+          break;
+        case "/registerationForm":
+          stream = fs.createReadStream(`${registerationPath}`);
+          break;
+        default:
+          stream = fs.createReadStream("home.html");
+          break;
+      }
+      stream.pipe(response);
+    })
+    .listen(3000, () => {
+      console.log("Server up and running at localhost:3000");
+    });
+
+lineDetail.question("Enter path to the registration page:", (path) => {
+  lineDetail.close();
+  server(path);
+});
