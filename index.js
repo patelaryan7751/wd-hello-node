@@ -7,7 +7,7 @@ const lineDetail = readline.createInterface({
   output: process.stdout,
 });
 
-const server = (registerationPath) =>
+const server = (registrationPath) =>
   http
     .createServer(function (request, response) {
       let url = request.url;
@@ -16,8 +16,8 @@ const server = (registerationPath) =>
         case "/project":
           stream = fs.createReadStream("project.html");
           break;
-        case "/registerationForm":
-          stream = fs.createReadStream(`${registerationPath}`);
+        case "/registrationForm":
+          stream = fs.createReadStream(`${registrationPath}`);
           break;
         default:
           stream = fs.createReadStream("home.html");
