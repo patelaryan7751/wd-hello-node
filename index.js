@@ -47,7 +47,7 @@ const todoList = () => {
         }\n`;
       return todo;
     });
-    return OUTPUT_STRING;
+    return OUTPUT_STRING.trim();
   };
 
   return {
