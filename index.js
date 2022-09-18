@@ -1,35 +1,48 @@
 const http = require("http");
 const fs = require("fs");
-const readline = require("readline");
+const args = require("minimist")(process.argv.slice(2));
 
-const lineDetail = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+let homeContent = "";
+let projectContent = "";
+let registrationContent = "";
+
+fs.readFile("home.html", (err, home) => {
+  if (err) {
+    throw err;
+  }
+  homeContent = home;
 });
 
-const server = (registrationPath) =>
-  http
-    .createServer(function (request, response) {
-      let url = request.url;
-      response.writeHeader(200, { "Content-Type": "text/html" });
-      switch (url) {
-        case "/project":
-          stream = fs.createReadStream("project.html");
-          break;
-        case "/registrationForm":
-          stream = fs.createReadStream(`${registrationPath}`);
-          break;
-        default:
-          stream = fs.createReadStream("home.html");
-          break;
-      }
-      stream.pipe(response);
-    })
-    .listen(3000, () => {
-      console.log("Server up and running at localhost:3000");
-    });
-
-lineDetail.question("Enter path to the registration page:", (path) => {
-  lineDetail.close();
-  server(path);
+fs.readFile("project.html", (err, project) => {
+  if (err) {
+    throw err;
+  }
+  projectContent = project;
 });
+
+fs.readFile("registration.html", (err, registration) => {
+  if (err) {
+    throw err;
+  }
+  registrationContent = registration;
+});
+http
+  .createServer((request, response) => {
+    let url = request.url;
+    response.writeHeader(200, { "Content-Type": "text/html" });
+    switch (url) {
+      case "/project":
+        response.write(projectContent);
+        response.end();
+        break;
+      case "/registration":
+        response.write(registrationContent);
+        response.end();
+        break;
+      default:
+        response.write(homeContent);
+        response.end();
+        break;
+    }
+  })
+  .listen(Number(args.port));

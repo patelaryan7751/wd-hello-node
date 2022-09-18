@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/patelaryan7751/wd-hello-node/issues"
   },
-  "homepage": "https://github.com/patelaryan7751/wd-hello-node#readme"
+  "homepage": "https://github.com/patelaryan7751/wd-hello-node#readme",
+  "dependencies": {
+    "minimist": "^1.2.6"
+  }
 }
